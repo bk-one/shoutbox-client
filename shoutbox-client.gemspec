@@ -11,14 +11,18 @@ Gem::Specification.new do |s|
   s.authors = ["Benjamin Krause"]
   s.autorequire = %q{shoutbox_client}
   s.date = %q{2011-01-05}
+  s.default_executable = %q{shout}
   s.description = %q{ Simple Ruby Client to manage status on a node.js Shoutbox Server }
   s.email = %q{bk@benjaminkrause.com}
+  s.executables = ["shout"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
   ]
   s.files = [
+    "bin/shout",
     "lib/shoutbox/configuration.rb",
+    "lib/shoutbox/shout.rb",
     "lib/shoutbox_client.rb"
   ]
   s.homepage = %q{http://github.com/benjaminkrause/shoutbox-client}
@@ -36,25 +40,31 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<trollop>, ["~> 1.16"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<webmock>, ["~> 1.6"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5"])
+      s.add_runtime_dependency(%q<trollop>, ["~> 1.16"])
       s.add_development_dependency(%q<rspec>, ["~> 1.2"])
       s.add_development_dependency(%q<webmock>, ["~> 1.6"])
     else
+      s.add_dependency(%q<trollop>, ["~> 1.16"])
       s.add_dependency(%q<rspec>, ["~> 2.3"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
       s.add_dependency(%q<webmock>, ["~> 1.6"])
       s.add_dependency(%q<jeweler>, ["~> 1.5"])
+      s.add_dependency(%q<trollop>, ["~> 1.16"])
       s.add_dependency(%q<rspec>, ["~> 1.2"])
       s.add_dependency(%q<webmock>, ["~> 1.6"])
     end
   else
+    s.add_dependency(%q<trollop>, ["~> 1.16"])
     s.add_dependency(%q<rspec>, ["~> 2.3"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
     s.add_dependency(%q<webmock>, ["~> 1.6"])
     s.add_dependency(%q<jeweler>, ["~> 1.5"])
+    s.add_dependency(%q<trollop>, ["~> 1.16"])
     s.add_dependency(%q<rspec>, ["~> 1.2"])
     s.add_dependency(%q<webmock>, ["~> 1.6"])
   end

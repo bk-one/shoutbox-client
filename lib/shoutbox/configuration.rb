@@ -1,5 +1,3 @@
-require 'YAML'
-
 module Shoutbox
   class Configuration
     attr_accessor :host, :port
