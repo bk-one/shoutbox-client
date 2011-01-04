@@ -1,6 +1,8 @@
+require 'YAML'
+
 module Shoutbox
   class Configuration
-    attr_reader :host, :port
+    attr_accessor :host, :port
 
     def initialize
       config_file_exists? ? read_config_file : default_config
@@ -18,7 +20,7 @@ module Shoutbox
       end
     
       def config_file
-        @config_file || File.join('~', '.shoutbox')
+        @config_file || File.join(ENV['HOME'], '.shoutbox')
       end
     
       def default_config
