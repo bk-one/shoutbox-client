@@ -1,7 +1,8 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
-require 'shoutbox-client'
+require 'webmock/rspec'
+require 'shoutbox_client'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

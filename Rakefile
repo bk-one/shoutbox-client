@@ -13,16 +13,17 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "shoutbox-client"
-  gem.homepage = "http://github.com/bk@benjaminkrause.com/shoutbox-client"
+  gem.homepage = "http://github.com/benjaminkrause/shoutbox-client"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{ ruby client to publish shoutbox status updates }
+  gem.description = %Q{ Simple Ruby Client to manage status on a node.js Shoutbox Server }
   gem.email = "bk@benjaminkrause.com"
   gem.authors = ["Benjamin Krause"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+  gem.autorequire = 'shoutbox_client'
+  gem.files = Dir['lib/**/*.rb'] + Dir['bin/*']
+  
+  gem.add_development_dependency 'rspec',   '~> 1.2'
+  gem.add_development_dependency 'webmock', '~> 1.6'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
@@ -34,7 +35,6 @@ end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
 end
 
 task :default => :spec
