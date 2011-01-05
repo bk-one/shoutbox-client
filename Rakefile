@@ -22,11 +22,6 @@ Jeweler::Tasks.new do |gem|
   gem.autorequire = 'shoutbox_client'
   gem.files = Dir['lib/**/*.rb'] + Dir['bin/*']
   gem.executable = 'shout'
-  
-  gem.add_dependency 'trollop', "~> 1.16"
-  
-  gem.add_development_dependency 'rspec',   '~> 1.2'
-  gem.add_development_dependency 'webmock', '~> 1.6'
 end
 Jeweler::RubygemsDotOrgTasks.new
 

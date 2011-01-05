@@ -10,8 +10,17 @@ module Shoutbox
     
     def parse_options
       @conf = Trollop::options do
-        # banner = MPPerf.options_banner
+        banner <<-EOS
+        shout is a simple command line client to update your Shoutbox
+
+        Usage:
+               shout -n <name> -s <red|green>
+               
+        where [options] are:
+        EOS
+        
         opt :host,    "The hostname of the Shoutbox", :type => String
+        opt :group,   "The group to use",             :type => String, :default => "default"
         opt :port,    "The port of the Shoutbox",     :type => Integer
         opt :name,    "", :type => String
         opt :status,  "", :type => String
@@ -24,7 +33,7 @@ module Shoutbox
     end
     
     def do_it
-      ShoutboxClient.shout :name => @conf[:name], :status => @conf[:status]
+      ShoutboxClient.shout :name => @conf[:name], :status => @conf[:status], :group => @conf[:group]
     end
   end
 end
