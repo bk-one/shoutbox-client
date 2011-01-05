@@ -8,12 +8,12 @@ Examples
 
 You can use it via ruby
 
-    ruby-1.9.2-p0 > ShoutboxClient.shout :name => "nightly-rake-task", :status => :red
+    ruby-1.9.2-p0 > ShoutboxClient.shout :statusId => "nightly-rake-task", :status => :red
     true
     
 or as a shell script
 
-    benjamin@Jiji % shout -n important-task -s red
+    benjamin@Jiji % shout green important-task
 
 Configuration
 ---
@@ -33,7 +33,7 @@ Otherwise you can set the configuration manually via ruby
 
 The shell script accepts host and port parameters
 
-    benjamin@Jiji % shout -n important-task -s red -h shoutbox.moviepilot.com -p 80
+    benjamin@Jiji % shout red important-task -h shoutbox.moviepilot.com -p 80
 
 
 Contributing to shoutbox-client

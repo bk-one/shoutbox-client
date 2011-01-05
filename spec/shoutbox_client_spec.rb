@@ -23,12 +23,30 @@ describe "ShoutboxClient" do
   
   context 'http communication' do
     it 'should create a valid PUT request to the shoutbox' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"group\":\"default\",\"name\":\"test_status\",\"status\":\"green\"}", 
+      stub_request(:put, "http://localhost:3000/status/my_group/test_status").
+        with(:body    => "{\"status\":\"green\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
-      ShoutboxClient.shout( :group => "default", :name => "test_status", :status => :green ).should == true
+      ShoutboxClient.shout( :group => "my_group", :statusId => "test_status", :status => :green ).should == true
     end
+    
+    it 'should create use group default if no group given' do
+      stub_request(:put, "http://localhost:3000/status/default/test_status").
+        with(:body    => "{\"status\":\"green\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+
+      ShoutboxClient.shout( :statusId => "test_status", :status => :green ).should == true
+    end
+    
+    it 'should delete a status' do
+      stub_request(:delete, "http://localhost:3000/status/default/test_status").
+        with(:headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+      
+      ShoutboxClient.shout( :statusId => "test_status", :status => :destroy ).should == true
+    end
+    
   end
 end
