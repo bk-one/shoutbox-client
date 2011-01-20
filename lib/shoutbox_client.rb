@@ -27,7 +27,7 @@ class ShoutboxClient
       req = Net::HTTP::Put.new( request_url(options) )
       default_headers(req)
       req['Content-Type'] = 'application/json'
-      req.body = { :status => options[:status].to_s }.to_json
+      req.body = { :statusId => options[:statusId], :group => (options[:group] || 'default'), :status => options[:status].to_s }.to_json
       http.request(req)
     end
     response.body == "OK"
@@ -48,7 +48,7 @@ class ShoutboxClient
   end
   
   def self.request_url( options )
-    '/status/' + (options[:group] || 'default') + "/" + options[:statusId]
+    '/status'
   end
   
   def self.valid_status?( status )
