@@ -12,8 +12,7 @@ module Shoutbox
     def parse_options
 
       sub_commands = %w(red green destroy)
-      
-      
+
       @conf = Trollop::options do
         banner <<-EOS
 usage: shout <subcommand> <statusId>
@@ -28,15 +27,13 @@ shout allows the folling options:
 EOS
         opt :host,    "The hostname of the Shoutbox",       :type => String
         opt :port,    "The port of the Shoutbox",           :type => Integer
-        opt :group,   "The group to use",                   :type => String, :default => "default"
-
-        stop_on sub_commands
+        opt :group,   "The group to use",                   :type => String, :default => "Shoutbox Default Group"
       end
 
       @conf[:status]   = ARGV.shift
       @conf[:statusId] = ARGV.shift
       
-      cmd_opts = case @conf[:status]
+      case @conf[:status]
         when "red"
           @conf[:message] = ARGV.shift
           Trollop::die "provide <statusId> and <message> when shouting red" if @conf[:message].to_s.empty?
