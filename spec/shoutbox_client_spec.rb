@@ -40,6 +40,30 @@ describe "ShoutboxClient" do
       ShoutboxClient.shout( :statusId => "test_status", :status => :green ).should == true
     end
     
+    it 'should include a message when status is red' do
+      stub_request(:put, "http://localhost:3000/status").
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"red\",\"message\":\"This is what you should do now..\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+
+      ShoutboxClient.shout( :statusId => "test_status", :status => :red, :message => "This is what you should do now.." ).should == true
+    end
+    
+    it 'should not include a message when status is green' do
+      stub_request(:put, "http://localhost:3000/status").
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"green\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+
+      ShoutboxClient.shout( :statusId => "test_status", :status => :green, :message => "This is what you should do now.." ).should == true
+    end
+    
+    it 'should deny red update if message is missin' do
+      lambda {
+        ShoutboxClient.shout( :statusId => "test_status", :status => :red )
+      }.should raise_error(ArgumentError)
+    end
+    
     it 'should delete a status' do
       stub_request(:delete, "http://localhost:3000/status").
         with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\"}",

@@ -26,7 +26,10 @@ class ShoutboxClient
     response = Net::HTTP.start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Put.new( request_url(options) )
       default_headers(req)
-      req.body = { :statusId => options[:statusId], :group => (options[:group] || 'default'), :status => options[:status].to_s }.to_json
+      body_data = { :statusId => options[:statusId], :group => (options[:group] || 'default'), :status => options[:status].to_s }
+      body_data[:message] = options[:message] if options[:status] == :red
+      raise ArgumentError if (options[:status] == :red) and body_data[:message].to_s.empty?
+      req.body = body_data.to_json
       http.request(req)
     end
     response.body == "OK"
