@@ -10,9 +10,6 @@ module Shoutbox
 
 
     def parse_options
-
-      sub_commands = %w(red green destroy)
-
       @conf = Trollop::options do
         banner <<-EOS
 usage: shout <subcommand> <statusId>
@@ -38,6 +35,8 @@ EOS
           @conf[:message] = ARGV.shift
           Trollop::die "provide <statusId> and <message> when shouting red" if @conf[:message].to_s.empty?
         when "green"
+          # noop
+        when "yellow"
           # noop
         when "remove"
           # noop

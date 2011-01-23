@@ -39,6 +39,24 @@ describe "ShoutboxClient" do
 
       ShoutboxClient.shout( :statusId => "test_status", :status => :green ).should == true
     end
+
+    it 'should not include a message when status is yellow and no message given' do
+      stub_request(:put, "http://localhost:3000/status").
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"yellow\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+
+      ShoutboxClient.shout( :statusId => "test_status", :status => :yellow ).should == true
+    end
+
+    it 'should include a message when status is yellow and message is given' do
+      stub_request(:put, "http://localhost:3000/status").
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"yellow\",\"message\":\"This is what you should do now..\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+
+      ShoutboxClient.shout( :statusId => "test_status", :status => :yellow, :message => "This is what you should do now.." ).should == true
+    end
     
     it 'should include a message when status is red' do
       stub_request(:put, "http://localhost:3000/status").
