@@ -26,7 +26,6 @@ class ShoutboxClient
     response = Net::HTTP.start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Put.new( request_url(options) )
       default_headers(req)
-      req['Content-Type'] = 'application/json'
       req.body = { :statusId => options[:statusId], :group => (options[:group] || 'default'), :status => options[:status].to_s }.to_json
       http.request(req)
     end
@@ -36,6 +35,7 @@ class ShoutboxClient
   def self.delete_status( options )
     response = Net::HTTP.start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Delete.new( request_url(options) )
+      req.body = { :statusId => options[:statusId], :group => (options[:group] || 'default') }.to_json
       default_headers(req)
       http.request(req)
     end
@@ -44,6 +44,7 @@ class ShoutboxClient
 
   def self.default_headers( request )
     request['User-Agent']   = 'Ruby shoutbox-client'
+    request['Content-Type'] = 'application/json'
     request['Accept']       = 'application/json'
   end
   

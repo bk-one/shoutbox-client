@@ -42,7 +42,8 @@ describe "ShoutboxClient" do
     
     it 'should delete a status' do
       stub_request(:delete, "http://localhost:3000/status").
-        with(:headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\"}",
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
       
       ShoutboxClient.shout( :statusId => "test_status", :status => :destroy ).should == true
