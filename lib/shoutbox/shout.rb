@@ -55,7 +55,7 @@ EOS
     end
     
     def do_it
-      ShoutboxClient.shout :name => @conf[:name], :statusId => @conf[:statusId], :status => @conf[:status], :group => @conf[:group]
+      ShoutboxClient.shout :name => @conf[:name], :statusId => @conf[:statusId], :status => @conf[:status], :group => @conf[:group], :message => @conf[:message]
     end
   end
 end
