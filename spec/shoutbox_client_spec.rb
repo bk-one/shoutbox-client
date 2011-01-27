@@ -88,7 +88,7 @@ describe "ShoutboxClient" do
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
       
-      ShoutboxClient.shout( :statusId => "test_status", :status => :destroy ).should == true
+      ShoutboxClient.shout( :statusId => "test_status", :status => :remove ).should == true
     end
     
   end

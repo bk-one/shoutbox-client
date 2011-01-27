@@ -8,7 +8,7 @@ class ShoutboxClient
   VALID_STATUS = { 'red'      => :update,
                    'yellow'   => :update,
                    'green'    => :update,
-                   'destroy'  => :delete  }
+                   'remove'   => :delete  }
   
   
   def self.configuration
