@@ -1,7 +1,7 @@
 require 'shoutbox/shout'
 require 'shoutbox/configuration'
 require 'net/http'
-require 'JSON'
+require 'json'
 require 'yaml'
 
 class ShoutboxClient
