@@ -24,7 +24,7 @@ class ShoutboxClient
   end
   
   def self.update_status( options )
-    response = Net::HTTP.start(configuration.host, configuration.port) do |http|
+    response = Net::HTTP.Proxy(configuration.proxy_host, configuration.proxy_port).start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Put.new( request_url(options) )
       default_headers(req)
       body_data = { :statusId => options[:statusId], :group => (options[:group] || 'default'), :status => options[:status].to_s }
@@ -37,7 +37,7 @@ class ShoutboxClient
   end
   
   def self.delete_status( options )
-    response = Net::HTTP.start(configuration.host, configuration.port) do |http|
+    response = Net::HTTP.Proxy(configuration.proxy_host, configuration.proxy_port).start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Delete.new( request_url(options) )
       req.body = { :statusId => options[:statusId], :group => (options[:group] || 'default') }.to_json
       default_headers(req)

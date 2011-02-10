@@ -22,9 +22,11 @@ a message.
 
 shout allows the folling options:
 EOS
-        opt :host,    "The hostname of the Shoutbox",       :type => String
-        opt :port,    "The port of the Shoutbox",           :type => Integer
-        opt :group,   "The group to use",                   :type => String, :default => "Shoutbox Default Group"
+        opt :host,        "The hostname of the Shoutbox",       :type => String
+        opt :port,        "The port of the Shoutbox",           :type => Integer
+        opt :proxy_host,  "The proxy host to use",              :type => String
+        opt :proxy_port,  "The proxy port to use",              :type => Integer
+        opt :group,       "The group to use",                   :type => String, :default => "Shoutbox Default Group"
       end
 
       @conf[:status]   = ARGV.shift

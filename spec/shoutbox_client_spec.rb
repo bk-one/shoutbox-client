@@ -12,11 +12,13 @@ describe "ShoutboxClient" do
     
     it 'should use the values of the config file' do
       tempfile = Tempfile.new( '.shoutbox' )
-      tempfile << { "host" => "example.com", "port" => 89 }.to_yaml
+      tempfile << { "host" => "example.com", "port" => 89, "proxy_host" => "prx", "proxy_port" => 8080 }.to_yaml
       tempfile.close
       ShoutboxClient.configuration.config_file = tempfile.path
       ShoutboxClient.configuration.host.should == 'example.com'
       ShoutboxClient.configuration.port.should == 89
+      ShoutboxClient.configuration.proxy_host.should == "prx"
+      ShoutboxClient.configuration.proxy_port.should == 8080
       ShoutboxClient.configuration.config_file = nil
     end
   end
