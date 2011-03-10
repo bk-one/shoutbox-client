@@ -19,6 +19,16 @@ describe "ShoutboxClient" do
       ShoutboxClient.configuration.port.should == 89
       ShoutboxClient.configuration.proxy_host.should == "prx"
       ShoutboxClient.configuration.proxy_port.should == 8080
+      ShoutboxClient.configuration.default_group.should == 'default group'
+      ShoutboxClient.configuration.config_file = nil
+    end
+    
+    it 'should use the configured default group' do
+      tempfile = Tempfile.new( '.shoutbox' )
+      tempfile << { "host" => "example.com", "port" => 89, "proxy_host" => "prx", "proxy_port" => 8080, "default_group" =>  "some group" }.to_yaml
+      tempfile.close
+      ShoutboxClient.configuration.config_file = tempfile.path
+      ShoutboxClient.configuration.default_group.should == 'some group'
       ShoutboxClient.configuration.config_file = nil
     end
   end
@@ -35,7 +45,7 @@ describe "ShoutboxClient" do
     
     it 'should create use group default if no group given' do
       stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"green\"}", 
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"green\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -44,7 +54,7 @@ describe "ShoutboxClient" do
 
     it 'should not include a message when status is yellow and no message given' do
       stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"yellow\"}", 
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"yellow\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -53,7 +63,7 @@ describe "ShoutboxClient" do
 
     it 'should include a message when status is yellow and message is given' do
       stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"yellow\",\"message\":\"This is what you should do now..\"}", 
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"yellow\",\"message\":\"This is what you should do now..\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -62,7 +72,7 @@ describe "ShoutboxClient" do
     
     it 'should include a message when status is red' do
       stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"red\",\"message\":\"This is what you should do now..\"}", 
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"red\",\"message\":\"This is what you should do now..\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -71,7 +81,7 @@ describe "ShoutboxClient" do
     
     it 'should not include a message when status is green' do
       stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\",\"status\":\"green\"}", 
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"green\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -86,7 +96,7 @@ describe "ShoutboxClient" do
     
     it 'should delete a status' do
       stub_request(:delete, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default\"}",
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\"}",
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
         to_return(:status => 200, :body => "OK", :headers => {})
       
