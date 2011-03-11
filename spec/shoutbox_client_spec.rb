@@ -52,15 +52,6 @@ describe "ShoutboxClient" do
       ShoutboxClient.shout( :statusId => "test_status", :status => :green ).should == true
     end
 
-    it 'should not include a message when status is yellow and no message given' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"yellow\"}", 
-             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
-        to_return(:status => 200, :body => "OK", :headers => {})
-
-      ShoutboxClient.shout( :statusId => "test_status", :status => :yellow ).should == true
-    end
-
     it 'should include a message when status is yellow and message is given' do
       stub_request(:put, "http://localhost:3000/status").
         with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"yellow\",\"message\":\"This is what you should do now..\"}", 
@@ -79,19 +70,26 @@ describe "ShoutboxClient" do
       ShoutboxClient.shout( :statusId => "test_status", :status => :red, :message => "This is what you should do now.." ).should == true
     end
     
-    it 'should not include a message when status is green' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"green\"}", 
-             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
-        to_return(:status => 200, :body => "OK", :headers => {})
-
-      ShoutboxClient.shout( :statusId => "test_status", :status => :green, :message => "This is what you should do now.." ).should == true
-    end
-    
-    it 'should deny red update if message is missin' do
+    it 'should deny red update if message is missing' do
       lambda {
         ShoutboxClient.shout( :statusId => "test_status", :status => :red )
       }.should raise_error(ArgumentError)
+    end
+
+    it 'should deny yellow update if message is missing' do
+      lambda {
+        ShoutboxClient.shout( :statusId => "test_status", :status => :yellow )
+      }.should raise_error(ArgumentError)
+    end
+
+    it 'should send optional status on green update' do
+      stub_request(:put, "http://localhost:3000/status").
+        with(:body    => "{\"statusId\":\"test_status\",\"group\":\"default group\",\"status\":\"green\",\"message\":\"everything's ok!\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+      lambda {
+        ShoutboxClient.shout( :statusId => "test_status", :status => :green, :message => "everything's ok!" )
+      }.should_not raise_error(ArgumentError)
     end
     
     it 'should delete a status' do
