@@ -17,7 +17,11 @@ class ShoutboxClient
   
   def self.shout( options )
     if valid_status?( options[:status] )
-      VALID_STATUS[options[:status].to_s] == :update ? update_status( options ) : delete_status( options )
+      begin
+        VALID_STATUS[options[:status].to_s] == :update ? update_status( options ) : delete_status( options ) 
+      rescue Errno::ECONNREFUSED 
+        false
+      end
     else
       false
     end

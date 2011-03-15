@@ -3,6 +3,10 @@ require 'tempfile'
 require 'json'
 
 describe "ShoutboxClient" do
+  before(:each) do
+    ShoutboxClient.configuration.config_file = '/dont/exists'
+  end
+  
   context 'configuration' do
     it 'should use the default configuration' do
       ShoutboxClient.configuration.config_file = '/i/dont/exist'
@@ -20,7 +24,6 @@ describe "ShoutboxClient" do
       ShoutboxClient.configuration.proxy_host.should == "prx"
       ShoutboxClient.configuration.proxy_port.should == 8080
       ShoutboxClient.configuration.default_group.should == 'default group'
-      ShoutboxClient.configuration.config_file = nil
     end
     
     it 'should use the configured default group' do
@@ -29,11 +32,17 @@ describe "ShoutboxClient" do
       tempfile.close
       ShoutboxClient.configuration.config_file = tempfile.path
       ShoutboxClient.configuration.default_group.should == 'some group'
-      ShoutboxClient.configuration.config_file = nil
     end
   end
   
   context 'http communication' do
+    
+    it 'should return false when it cant connect to the host' do
+      ShoutboxClient.should_receive(:update_status).and_raise(Errno::ECONNREFUSED)
+      ShoutboxClient.shout( :group => "my_group", :statusId => "test_status", :status => :green ).should == false
+    end
+    
+    
     it 'should create a valid PUT request to the shoutbox' do
       stub_request(:put, "http://localhost:3000/status").
         with(:body    => "{\"statusId\":\"test_status\",\"group\":\"my_group\",\"status\":\"green\"}", 
