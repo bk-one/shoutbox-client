@@ -31,8 +31,9 @@ class ShoutboxClient
     response = Net::HTTP.Proxy(configuration.proxy_host, configuration.proxy_port).start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Put.new( request_url(options) )
       default_headers(req)
-      body_data = { :statusId => options[:statusId], :group => (options[:group] || configuration.default_group), :status => options[:status].to_s }
-      body_data[:message] = options[:message] if options[:message]
+      body_data = { :name => options[:name], :group => (options[:group] || configuration.default_group), :status => options[:status].to_s }
+      body_data[:message]    = options[:message]    if options[:message]
+      body_data[:expires_in] = options[:expires_in] if options[:expires_in]
       raise ArgumentError if (options[:status] == :red or options[:status] == :yellow) and body_data[:message].to_s.empty?
       req.body = body_data.to_json
       http.request(req)
@@ -43,7 +44,7 @@ class ShoutboxClient
   def self.delete_status( options )
     response = Net::HTTP.Proxy(configuration.proxy_host, configuration.proxy_port).start(configuration.host, configuration.port) do |http|
       req = Net::HTTP::Delete.new( request_url(options) )
-      req.body = { :statusId => options[:statusId], :group => (options[:group] || configuration.default_group) }.to_json
+      req.body = { :name => options[:name], :group => (options[:group] || configuration.default_group) }.to_json
       default_headers(req)
       http.request(req)
     end
@@ -51,9 +52,10 @@ class ShoutboxClient
   end
 
   def self.default_headers( request )
-    request['User-Agent']   = 'Ruby shoutbox-client'
-    request['Content-Type'] = 'application/json'
-    request['Accept']       = 'application/json'
+    request['User-Agent']             = 'Ruby shoutbox-client'
+    request['Content-Type']           = 'application/json'
+    request['Accept']                 = 'application/json'
+    request['X-Shoutbox-Auth-Token']  = configuration.auth_token
   end
   
   def self.request_url( options )

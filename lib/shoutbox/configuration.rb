@@ -1,6 +1,6 @@
 module Shoutbox
   class Configuration
-    attr_accessor :host, :port, :proxy_host, :proxy_port, :default_group
+    attr_accessor :host, :port, :proxy_host, :proxy_port, :default_group, :auth_token
 
     def initialize
       config_file_exists? ? read_config_file : default_config
@@ -25,6 +25,7 @@ module Shoutbox
         @host           = 'localhost'
         @port           = 3000
         @default_group  = 'default group'
+        @auth_token     = 'invalid-auth-token'
         @proxy_host     = nil
         @proxy_port     = nil
       end
@@ -34,6 +35,7 @@ module Shoutbox
         @host           = config_data["host"]
         @port           = config_data["port"]
         @default_group  = config_data["default_group"] || 'default group'
+        @auth_token     = config_data["auth_token"]
         @proxy_host     = config_data["proxy_host"]
         @proxy_port     = config_data["proxy_port"]
       end
