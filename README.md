@@ -8,12 +8,15 @@ Examples
 
 You can use it via ruby
 
-    ruby-1.9.2-p0 > ShoutboxClient.shout :statusId => "nightly-rake-task", :status => :red
+    ruby-1.9.2-p0 > ShoutboxClient.shout :name => "My Rake Task", :status => :red, :message => 'failed miserably' 
     true
+
+	ruby-1.9.2-p0 > ShoutboxClient.shout :name => "My Other Task", :status => :green, :expires_in => 1.hour
+	true
     
 or as a shell script
 
-    benjamin@Jiji % shout green important-task
+    benjamin@Jiji % shout green 'important task'
 
 Configuration
 ---
@@ -23,6 +26,8 @@ in YAML format, like this
 
     host: localhost
     port: 3001
+    auth_token: my-shoutbox-auth-token
+
     
 Otherwise you can set the configuration manually via ruby
 
