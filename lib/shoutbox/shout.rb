@@ -12,13 +12,18 @@ module Shoutbox
     def parse_options
       @conf = Trollop::options do
         banner <<-EOS
-usage: shout <subcommand> <name>
+usage: shout <subcommand> <name> [message]
 
-<subcommand> must be one of red, green, remove
+<subcommand> must be one of green, yellow, red, remove
 <name> is any given string you can think of
+[message] is optional for green and required for red and yellow
 
-If you want to delete a status, you must provide
-a message.
+examples
+
+shout green db-export
+shout yellow db-export "export took too long"
+shout red db-export "failed saving file"
+shout remove db-export
 
 shout allows the folling options:
 EOS
@@ -40,7 +45,7 @@ EOS
         when "green"
           # noop
         when "yellow"
-          Trollop::die "provide <name> and <message> when shouting red" if @conf[:message].to_s.empty?
+          Trollop::die "provide <name> and <message> when shouting yellow" if @conf[:message].to_s.empty?
         when "remove"
           # noop
         else
