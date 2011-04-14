@@ -24,8 +24,7 @@ Configuration
 The shoutbox-client will look for a ~/.shoutbox config file with a hostname and portnumber
 in YAML format, like this
 
-    host: localhost
-    port: 3001
+    host: http://shoutbox.io
     auth_token: my-shoutbox-auth-token
 
     
@@ -33,12 +32,13 @@ Otherwise you can set the configuration manually via ruby
 
     ShoutboxClient.configuration.config_file = 'some/file'
     # or
-    ShoutboxClient.configuration.host = 'shoutbox.moviepilot.com'
-    ShoutboxClient.configuration.port = 80
+    ShoutboxClient.configuration.host = 'http://shoutbox.moviepilot.com:991'
 
 The shell script accepts host and port parameters
 
-    benjamin@Jiji % shout red important-task -h shoutbox.moviepilot.com -p 80
+    benjamin@Jiji % shout red important-task "failed!" -h "http://shoutbox.moviepilot.com"
+    
+Try shout --help for all the options
 
 
 Contributing to shoutbox-client
