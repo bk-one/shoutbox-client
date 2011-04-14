@@ -22,6 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.autorequire = 'shoutbox_client'
   gem.files = Dir['lib/**/*.rb'] + Dir['bin/*']
   gem.executable = 'shout'
+  gem.add_dependency 'json'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
