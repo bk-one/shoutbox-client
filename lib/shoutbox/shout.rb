@@ -28,10 +28,10 @@ shout remove db-export
 shout allows the folling options:
 EOS
         opt :host,        "The hostname of the Shoutbox",       :type => String
-        opt :port,        "The port of the Shoutbox",           :type => Integer
         opt :proxy_host,  "The proxy host to use",              :type => String
         opt :proxy_port,  "The proxy port to use",              :type => Integer
         opt :group,       "The group to use",                   :type => String
+        opt :auth_token,  "The auth-token to use",              :type => String
         opt :expires_in,  "Number of seconds this status should expire in", :type => Integer
       end
 
@@ -54,8 +54,9 @@ EOS
       
       Trollop::die "provide <status> and <name>" unless @conf[:status] and @conf[:name]
       
-      ShoutboxClient.configuration.host = @conf[:host]  if     @conf[:host]
-      ShoutboxClient.configuration.port = @conf[:port]  if     @conf[:port]
+      ShoutboxClient.configuration.host       = @conf[:host]       if @conf[:host]
+      ShoutboxClient.configuration.port       = @conf[:port]       if @conf[:port]
+      ShoutboxClient.configuration.auth_token = @conf[:auth_token] if @conf[:auth_token]
     end
     
     def do_it
