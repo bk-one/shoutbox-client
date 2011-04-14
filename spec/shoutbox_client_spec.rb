@@ -10,27 +10,25 @@ describe "ShoutboxClient" do
   context 'configuration' do
     it 'should use the default configuration' do
       ShoutboxClient.configuration.config_file = '/i/dont/exist'
-      ShoutboxClient.configuration.host.should == 'localhost'
-      ShoutboxClient.configuration.port.should == 3000
+      ShoutboxClient.configuration.host.should == 'http://shoutbox.io/'
       ShoutboxClient.configuration.auth_token.should == 'invalid-auth-token'
     end
     
     it 'should use the values of the config file' do
       tempfile = Tempfile.new( '.shoutbox' )
-      tempfile << { "host" => "example.com", "port" => 89, "proxy_host" => "prx", "proxy_port" => 8080, "auth_token" => 'abc' }.to_yaml
+      tempfile << { "host" => "http://example.com", "proxy_host" => "prx", "proxy_port" => 8080, "auth_token" => 'abc' }.to_yaml
       tempfile.close
       ShoutboxClient.configuration.config_file = tempfile.path
-      ShoutboxClient.configuration.host.should == 'example.com'
-      ShoutboxClient.configuration.port.should == 89
+      ShoutboxClient.configuration.host.should == 'http://example.com'
       ShoutboxClient.configuration.proxy_host.should == "prx"
       ShoutboxClient.configuration.proxy_port.should == 8080
-      ShoutboxClient.configuration.default_group.should == 'default group'
+      ShoutboxClient.configuration.default_group.should == 'Home'
       ShoutboxClient.configuration.auth_token.should == 'abc'
     end
     
-    it 'should use the configured default group' do
+    it 'should use the configured Home' do
       tempfile = Tempfile.new( '.shoutbox' )
-      tempfile << { "host" => "example.com", "port" => 89, "proxy_host" => "prx", "proxy_port" => 8080, "default_group" =>  "some group" }.to_yaml
+      tempfile << { "host" => "http://example.com","proxy_host" => "prx", "proxy_port" => 8080, "default_group" =>  "some group" }.to_yaml
       tempfile.close
       ShoutboxClient.configuration.config_file = tempfile.path
       ShoutboxClient.configuration.default_group.should == 'some group'
@@ -46,7 +44,7 @@ describe "ShoutboxClient" do
     
     
     it 'should create a valid PUT request to the shoutbox' do
-      stub_request(:put, "http://localhost:3000/status").
+      stub_request(:put, "http://shoutbox.io/status").
         with(:body    => "{\"name\":\"test_status\",\"group\":\"my_group\",\"status\":\"green\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
@@ -55,8 +53,8 @@ describe "ShoutboxClient" do
     end
     
     it 'should create use group default if no group given' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"name\":\"test_status\",\"group\":\"default group\",\"status\":\"green\"}", 
+      stub_request(:put, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\",\"status\":\"green\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -64,8 +62,8 @@ describe "ShoutboxClient" do
     end
 
     it 'should include a message when status is yellow and message is given' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"name\":\"test_status\",\"group\":\"default group\",\"status\":\"yellow\",\"message\":\"This is what you should do now..\"}", 
+      stub_request(:put, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\",\"status\":\"yellow\",\"message\":\"This is what you should do now..\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -73,8 +71,8 @@ describe "ShoutboxClient" do
     end
     
     it 'should include a message when status is red' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"name\":\"test_status\",\"group\":\"default group\",\"status\":\"red\",\"message\":\"This is what you should do now..\"}", 
+      stub_request(:put, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\",\"status\":\"red\",\"message\":\"This is what you should do now..\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -82,8 +80,8 @@ describe "ShoutboxClient" do
     end
 
     it 'should include an expiration time when given' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"name\":\"test_status\",\"group\":\"default group\",\"status\":\"green\",\"expires_in\":3600}", 
+      stub_request(:put, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\",\"status\":\"green\",\"expires_in\":3600}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
 
@@ -103,8 +101,8 @@ describe "ShoutboxClient" do
     end
 
     it 'should send optional status on green update' do
-      stub_request(:put, "http://localhost:3000/status").
-        with(:body    => "{\"name\":\"test_status\",\"group\":\"default group\",\"status\":\"green\",\"message\":\"everything's ok!\"}", 
+      stub_request(:put, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\",\"status\":\"green\",\"message\":\"everything's ok!\"}", 
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
       lambda {
@@ -113,8 +111,8 @@ describe "ShoutboxClient" do
     end
     
     it 'should delete a status' do
-      stub_request(:delete, "http://localhost:3000/status").
-        with(:body    => "{\"name\":\"test_status\",\"group\":\"default group\"}",
+      stub_request(:delete, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\"}",
              :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
         to_return(:status => 200, :body => "OK", :headers => {})
       
