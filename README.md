@@ -11,9 +11,14 @@ You can use it via ruby
     ruby-1.9.2-p0 > ShoutboxClient.shout :name => "My Rake Task", :status => :red, :message => 'failed miserably' 
     true
 
-	ruby-1.9.2-p0 > ShoutboxClient.shout :name => "My Other Task", :status => :green, :expires_in => 1.hour
-	true
-    
+    ruby-1.9.2-p0 > ShoutboxClient.shout :name => "My Other Task", :status => :green, :expires_in => 1.hour
+    true
+
+if you want to set an explicit name to be displayed on your shoutbox, pass the option :display_name
+
+    ruby-1.9.2-p0 > ShoutboxClient.shout :name => "My Other Task", :status => :green, :expires_in => 1.hour, :display_name => 'TOLD YOU SO!'
+    true
+   
 or as a shell script
 
     benjamin@Jiji % shout green 'important task'

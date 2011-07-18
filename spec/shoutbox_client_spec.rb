@@ -79,6 +79,16 @@ describe "ShoutboxClient" do
       ShoutboxClient.shout( :name => "test_status", :status => :red, :message => "This is what you should do now.." ).should == true
     end
 
+    it 'should contain the display name when option given' do
+      stub_request(:put, "http://shoutbox.io/status").
+        with(:body    => "{\"name\":\"test_status\",\"group\":\"my_group\",\"status\":\"green\",\"display_name\":\"I TOLD YOU SO!\"}", 
+             :headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby shoutbox-client', 'X-Shoutbox-Auth-Token' => 'invalid-auth-token'}).
+        to_return(:status => 200, :body => "OK", :headers => {})
+
+      ShoutboxClient.shout( :group => "my_group", :name => "test_status", :status => :green, :display_name => 'I TOLD YOU SO!' ).should == true
+
+    end
+
     it 'should include an expiration time when given' do
       stub_request(:put, "http://shoutbox.io/status").
         with(:body    => "{\"name\":\"test_status\",\"group\":\"Home\",\"status\":\"green\",\"expires_in\":3600}", 

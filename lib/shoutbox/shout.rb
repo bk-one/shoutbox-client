@@ -31,6 +31,7 @@ EOS
         opt :proxy_host,  "The proxy host to use",              :type => String
         opt :proxy_port,  "The proxy port to use",              :type => Integer
         opt :group,       "The group to use",                   :type => String
+        opt :display,     "The display name",                   :type => String
         opt :auth_token,  "The auth-token to use",              :type => String
         opt :expires_in,  "Number of seconds this status should expire in", :type => Integer
       end
@@ -60,7 +61,7 @@ EOS
     end
     
     def do_it
-      ShoutboxClient.shout :name => @conf[:name], :status => @conf[:status], :group => @conf[:group], :message => @conf[:message], :expires_in => @conf[:expires_in]
+      ShoutboxClient.shout :name => @conf[:name], :status => @conf[:status], :group => @conf[:group], :message => @conf[:message], :expires_in => @conf[:expires_in], :display_name => @conf[:display]
     end
   end
 end
