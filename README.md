@@ -1,7 +1,7 @@
 shoutbox-client
 ===
 
-A simple Ruby client to manage your shoutbox (see https://github.com/benjaminkrause/shoutbox). 
+A simple Ruby client to manage your shoutbox (see http://shoutbox.io).
 
 Examples
 ---
